@@ -148,7 +148,12 @@ pnpm-debug.log*
 :::
 * git merge \<name\> 合并分支
 * git branch -d \<name\> 删除分支
-* git reset HEAD 撤销上一次的 add 操作。也可以在后面添加文件名来指定撤销某个文件
+* git reset 撤销git add 的操作
+::: tip
++ HEAD 撤销上一次的 add 操作。也可以在后面添加文件名来指定撤销某个文件()
++ . 撤销全部
++ 文件名，撤销某个文件
+:::
 * git status 查看文件状态
 
 ### 报错解决

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div class="aaa">
+    <div class="bbb"></div>
+  </div>
+</body>
+</html>
+<style>
+  .aaa {
+    width: 100%;
+    height: 400px;
+    background: red;
+    overflow: hidden;
+  }
+  .bbb {
+    width: 10px;
+    height: 10px;
+    background: green;
+    margin: 0 auto;
+  }
+</style>
+<script>
+  async function aa() {
+    console.log(1)
+    let b = await bb()
+    console.log(b)
+  }
+
+  function bb() {
+    console.log(2)
+    setTimeout(function() {
+      console.log(3)
+      return 'a'
+    }, 1000)
+    console.log(4)
+  }
+  aa().then(()=> {
+    console.log(5)
+  })
+</script>

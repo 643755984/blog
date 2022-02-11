@@ -82,13 +82,14 @@ module.exports = {
           ]
         },
         {
-          title: "VUE2.0",
+          title: "VUE",
           collapsable: true,  // 设置是否可以手动展开
           children: [
             // 'vueBase/render',
             'vue/data',
             'vue/binding',
-            'vue/signal'
+            'vue/signal',
+            'vue/vue3'
           ]
         },
         {

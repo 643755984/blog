@@ -103,8 +103,9 @@ module.exports = {
           title: "其它",
           collapsable: true,
           children: [
-            'other/server',
-            'other/git01'
+            // 'other/server',
+            'other/git01',
+            'other/tools'
           ]
         },
       ],
@@ -163,9 +164,7 @@ module.exports = {
           collapsable: true,  // 设置是否可以手动展开
           children: [
             'webpack/introduction',
-            'webpack/02',
             'webpack/loader',
-            'webpack/04',
             'webpack/devServer',
             'webpack/babel',
             'webpack/sourceMap',

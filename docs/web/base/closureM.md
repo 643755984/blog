@@ -67,31 +67,25 @@ foo();
 
 这里直接给出简要的执行过程：
 
-1.进入全局代码，创建全局执行上下文，全局执行上下文压入执行上下文栈
-
-2.全局执行上下文初始化
-
-3.执行 checkscope 函数，创建 checkscope 函数执行上下文，checkscope 执行上下文被压入执行上下文栈
-
-4.checkscope 执行上下文初始化，创建变量对象、作用域链、this等
-
-5.checkscope 函数执行完毕，checkscope 执行上下文从执行上下文栈中弹出
-
-6.执行 f 函数，创建 f 函数执行上下文，f 执行上下文被压入执行上下文栈
-
-7.f 执行上下文初始化，创建变量对象、作用域链、this等
-
-8.f 函数执行完毕，f 函数上下文从执行上下文栈中弹出
+1. 进入全局代码，创建全局执行上下文，全局执行上下文压入执行上下文栈
+2. 全局执行上下文初始化
+3. 执行 checkscope 函数，创建 checkscope 函数执行上下文，checkscope 执行上下文被压入执行上下文栈
+4. checkscope 执行上下文初始化，创建变量对象、作用域链、this等
+5. checkscope 函数执行完毕，checkscope 执行上下文从执行上下文栈中弹出
+6. 执行 f 函数，创建 f 函数执行上下文，f 执行上下文被压入执行上下文栈
+7. f 执行上下文初始化，创建变量对象、作用域链、this等
+8. f 函数执行完毕，f 函数上下文从执行上下文栈中弹出
 
 了解到这个过程，我们应该思考一个问题，那就是：
 当 f 函数执行的时候，checkscope 函数上下文已经被销毁了啊(即从执行上下文栈中被弹出)，怎么还会读取到 checkscope 作用域下的 scope 值呢？
 
-这其实是f 执行上下文维护了一个作用域链：
+这其实是f 执行上下文维护了一个作用域链。  
 
-fContext = {
-    Scope: [AO, checkscopeContext.AO, globalContext.VO],
-}
-对的，就是因为这个作用域链，f 函数依然可以读取到 checkscopeContext.AO 的值，说明当 f 函数引用了 checkscopeContext.AO 中的值的时候，即使 checkscopeContext 被销毁了，但是 JavaScript 依然会让 checkscopeContext.AO 活在内存中，f 函数依然可以通过 f 函数的作用域链找到它，正是因为 JavaScript 做到了这一点，从而实现了闭包这个概念。
+所以简单的总结形成闭包需要两个条件：  
+* 函数访问自由变量
+* 创建它的上下文已经销毁，但它仍然存在（可以简单的理解为：函数执行后返回结果是一个内部函数）
+
+
 
 ## 必刷题
 ```js
@@ -110,20 +104,15 @@ data[2]();
 
 答案是都是 3，让我们分析一下原因：
 
-当执行到 data[0] 函数之前，此时全局上下文的 VO 为：
+当执行到 data[0] 函数之前，此时全局上下文为：
+```js
+data: [...],
+i: 3
+```
 
-globalContext = {
-    VO: {
-        data: [...],
-        i: 3
-    }
-}
-当执行 data[0] 函数的时候，data[0] 函数的作用域链为：
+当执行 data[0] 函数的时候，data[0] 函数的作用域链为： data[0]函数作用域 和 全局作用域  
 
-data[0]Context = {
-    Scope: [AO, globalContext.VO]
-}
-data[0]Context 的 AO 并没有 i 值，所以会从 globalContext.VO 中查找，i 为 3，所以打印的结果就是 3。
+由于 data[0]函数自身作用域没有 i，所以会向全局作用域上找，也就 i = 0
 
 data[1] 和 data[2] 是一样的道理。
 
@@ -146,32 +135,16 @@ data[2]();
 ```
 
 当执行到 data[0] 函数之前，此时全局上下文的 VO 为：
+```js
+data: [...],
+i: 3
+```
 
-globalContext = {
-    VO: {
-        data: [...],
-        i: 3
-    }
-}
 跟没改之前一模一样。
 
-当执行 data[0] 函数的时候，data[0] 函数的作用域链发生了改变：
+当执行 data[0] 函数的时候，data[0] 函数的作用域链发生了改变： data[0] 的执行上下文维护了匿名函数的作用域
 
-data[0]Context = {
-    Scope: [AO, 匿名函数Context.AO globalContext.VO]
-}
-匿名函数执行上下文的AO为：
-
-匿名函数Context = {
-    AO: {
-        arguments: {
-            0: 0,
-            length: 1
-        },
-        i: 0
-    }
-}
-data[0]Context 的 AO 并没有 i 值，所以会沿着作用域链从匿名函数 Context.AO 中查找，这时候就会找 i 为 0，找到了就不会往 globalContext.VO 中查找了，即使 globalContext.VO 也有 i 的值(值为3)，所以打印的结果就是0。
+于是当 data[0]函数 中找不到 i 的值，所以会沿着作用域链从匿名函数中查找，这时候就会找 i 为 0，找到了就不会往全局作用域中查找了，即使 全局作用域也有 i 的值(值为3)，所以打印的结果就是0。
 
 data[1] 和 data[2] 是一样的道理。
 

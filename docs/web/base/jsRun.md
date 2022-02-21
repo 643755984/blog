@@ -273,7 +273,7 @@ console.log(3);
 当主线程内的任务执行完毕，主线程为空时，会检查微任务的Event Queue，如果有任务，就全部执行，如果没有就执行下一个宏任务
 上述过程会不断重复，这就是Event Loop，比较完整的事件循环  
 
-## 关于Promist
+## 关于Promise
 new Promise(() => {}).then() ，我们来看这样一个Promise代码  
 
 前面的 new Promise() 这一部分是一个构造函数，这是一个同步任务  
@@ -312,7 +312,7 @@ console.log(2)
 
 可以理解为，await 以前的代码，相当于与 new Promise 的同步代码，await 以后的代码相当于 Promise.then的异步  
 
-## 举栗印证
+## 举例印证
 首先给大家来一个比较直观的动图  
 
 ![webpack](../../assets/jsAdvanced/jsRun_09.gif)  
@@ -356,4 +356,4 @@ console.log(8)
 
 结果：1，4，8，7，3，6，5，2  
 
-本文内容大部分来自[掘金isboyjc的一次搞懂JS运行机制](https://juejin.cn/post/6844903919789801486#heading-4)，个人只是做了小小的修改
+本文内容来自[掘金isboyjc的一次搞懂JS运行机制](https://juejin.cn/post/6844903919789801486#heading-4)。
